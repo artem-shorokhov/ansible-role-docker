@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Artem Shorokhov
+  description: Set up Jenkins master server.
+  license: BSD
+  min_ansible_version: 2.0
+  platforms:
+  - name: EL
+    versions:
+    - 7
+  galaxy_tags:
+    - Jenkins
+
+dependencies: []
