@@ -1,0 +1,7 @@
+---
+
+- name: pull registry image
+  shell: docker pull registry
+
+- name: run docker registry container
+  shell: docker run -itd -p 5000:5000 --restart=always --name docker-registry registry

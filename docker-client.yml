@@ -1,0 +1,8 @@
+---
+
+- name: Set up Docker client.
+  hosts: client
+  become: yes
+
+  roles:
+  - docker-client

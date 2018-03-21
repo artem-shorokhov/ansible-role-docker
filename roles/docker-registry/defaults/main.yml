@@ -1,2 +1,5 @@
 ---
 
+hostname: docker.registry
+subject: { country: 'UA', state: 'Kyivska' , locality: 'Kyiv', organization: 'GlobalLogic', organizationalUnit: 'Contractor', commonName: "{{ hostname }}", email: 'mail@mail.com'}
+user_provided_certificate: true

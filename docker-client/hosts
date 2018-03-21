@@ -1,1 +1,0 @@
-docker-client ansible_connection=local

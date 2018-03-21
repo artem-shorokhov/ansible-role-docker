@@ -1,0 +1,28 @@
+---
+
+- name: add vagrant user to docker group
+  user:
+    name: vagrant
+    groups: docker
+    append: yes
+
+- name: add docker.registry hostname resolution
+  lineinfile:
+    path: /etc/hosts
+    insertafter: EOF
+    line: '192.168.3.3 docker.registry'
+
+- name: mark docker.registry as insecure
+  copy:
+    src: "{{ role_path }}/files/daemon.json"
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0600
+  register: docker_config
+
+- name: restart docker if config was changed
+  service:
+    name: docker
+    state: restarted
+  when: docker_config.changed

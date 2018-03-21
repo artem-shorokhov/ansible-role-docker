@@ -1,0 +1,54 @@
+---
+
+- name: install nginx
+  yum:
+    name: nginx
+    state: latest
+
+- name: ensure nginx is started and runs on startup
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: put nginx configuration in place
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  register: nginx_config
+
+- name: ensure '/etc/nginx/ssl' directory exists
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: generate self-signed openssl certificates
+  # implemented with 'shell' instead of 'openssl_certificate' module, as latter
+  # requires python pyOpenSSL library which is not included by default
+  shell: "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/{{ hostname }}.key -out /etc/nginx/ssl/{{ hostname }}.crt -subj /C={{ subject.country }}/ST={{ subject.state }}/L={{ subject.locality }}/O={{ subject.organization }}/OU={{ subject.organizationalUnit }}/CN={{ hostname }}/emailAddress={{ subject.email }}"
+  when: not user_provided_certificate
+  changed_when: false
+
+- name: copy user-provided certificate
+  copy:
+    src: "{{ role_path }}/files/cert.{{ item }}"
+    dest: "/etc/nginx/ssl/{{ hostname }}.{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - crt
+    - key
+  when: user_provided_certificate
+
+- name: restart nginx if configuration was changed
+  service:
+    name: nginx
+    state: restarted
+  when: nginx_config.changed

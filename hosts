@@ -1,2 +1,3 @@
 [servers]
-docker ansible_connection=local
+registry ansible_connection=local
+client   ansible_connection=local

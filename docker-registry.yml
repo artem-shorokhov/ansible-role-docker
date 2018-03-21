@@ -1,6 +1,7 @@
 ---
+
 - name: Set up Docker registry.
-  hosts: docker
+  hosts: registry
   become: yes
 
   roles:

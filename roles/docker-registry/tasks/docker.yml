@@ -1,6 +1,27 @@
 ---
 
-- name: install docker
+- name: install dependencies
   yum:
-    name: docker
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: add docker yum repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: install docker-ce
+  yum:
+    name: docker-ce
     state: latest
+
+- name: ensure docker is started and runs on startup
+  service:
+    name: docker
+    state: started
+    enabled: yes
