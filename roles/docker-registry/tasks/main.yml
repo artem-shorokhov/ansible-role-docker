@@ -7,7 +7,10 @@
   register: registry_container_id
   changed_when: false
 
+- debug:
+    var: registry_container_id
+  
 - import_tasks: registry.yml
-  when: registry_container_id == ''
+  when: registry_container_id.stdout == ''
 
 - import_tasks: nginx.yml
