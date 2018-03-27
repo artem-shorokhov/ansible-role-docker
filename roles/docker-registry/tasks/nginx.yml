@@ -18,7 +18,7 @@
     owner: root
     group: root
     mode: 0644
-  register: nginx_config
+  notify: restart nginx
 
 - name: ensure '/etc/nginx/ssl' directory exists
   file:
@@ -47,9 +47,3 @@
     - crt
     - key
   when: user_provided_certificate
-
-- name: restart nginx if configuration was changed
-  service:
-    name: nginx
-    state: restarted
-  when: nginx_config.changed
