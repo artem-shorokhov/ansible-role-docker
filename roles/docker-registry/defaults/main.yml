@@ -3,4 +3,3 @@
 hostname: docker.registry
 subject: { country: 'UA', state: 'Kyivska' , locality: 'Kyiv', organization: 'GlobalLogic', organizationalUnit: 'Contractor', commonName: "{{ hostname }}", email: 'mail@mail.com'}
 subj: "/C={{ subject.country }}/ST={{ subject.state }}/L={{ subject.locality }}/O={{ subject.organization }}/OU={{ subject.organizationalUnit }}/CN={{ hostname }}/emailAddress={{ subject.email }}"
-user_provided_certificate: false
