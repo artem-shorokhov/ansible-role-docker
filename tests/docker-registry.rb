@@ -1,9 +1,14 @@
-control 'packages' do
+control 'docker-package' do
   impact 1.0
-  title 'Required packages should be installed.'
+  title 'Docker should be installed.'
   describe package('docker-ce') do
     it { should be_installed }
   end
+end
+
+control 'nginx-package' do
+  impact 1.0
+  title 'nginx should be installed.'
   describe package('nginx') do
     it { should be_installed }
   end
@@ -14,7 +19,7 @@ control 'nginx-config' do
   title 'nginx configustaion file should be in place.'
   describe file('/etc/nginx/nginx.conf') do
     it { should exist }
-    its('content') { should match proxy_pass http://localhost:5000; }
+    its('content') { should match 'proxy_pass http://localhost:5000;' }
   end
 end
 
@@ -38,7 +43,7 @@ control 'nginx-service' do
   end
 end
 
-control 'sssl-port-is-open' do
+control 'ssl-port-is-open' do
   impact 1.0
   title 'SSL port should be listening.'
   describe port(443) do
@@ -49,7 +54,8 @@ end
 control 'redirect' do
   impact 1.0
   title 'Requests on port 80 should be redirected to port 443.'
-  describe http('http://localhost') do
+  describe http('http://192.168.3.3') do
     its('status') { should cmp 301 }
+	
   end
 end

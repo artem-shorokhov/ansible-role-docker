@@ -6,9 +6,6 @@
   shell: docker ps --filter ancestor=registry -q
   register: registry_container_id
   changed_when: false
-
-- debug:
-    var: registry_container_id
   
 - import_tasks: registry.yml
   when: registry_container_id.stdout == ''

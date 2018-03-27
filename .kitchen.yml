@@ -28,7 +28,6 @@ suites:
       inspec_tests:
         - tests
 
-# Workaround to avoid 'SCP upload failed (open failed (1))'.
+# Workaround to prevent 'SCP upload failed (open failed (1))'.
 transport:
   max_ssh_sessions: 6
-  
